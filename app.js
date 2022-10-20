@@ -94,6 +94,21 @@ function deleteListTask(selectorId) {
   el.remove();
 }
 
+// done button
+function doneListTask(selectorId) {
+  let el;
+
+  el = document.getElementById(selectorId);
+
+  // add new class for dexcription
+  el.firstElementChild.classList.toggle("item__description__done");
+
+  // add new class for done button
+  el.children[1].children[0].children[0].classList.toggle(
+    "item__done--btn--done"
+  );
+}
+
 // APP CONTROLLER
 
 function ctrlAddTask() {
@@ -114,12 +129,19 @@ function ctrlAddTask() {
 }
 
 function ctrlDeleteTask(event) {
-  let taskId;
+  let taskId, doneBtn, clickedElement;
+
+  doneBtn = "ion-ios-checkmark-outline";
+  clickedElement = event.target.className;
   // find ID
   taskId = event.target.parentNode.parentNode.parentNode.parentNode.id;
 
-  // check is there any ID
-  if (taskId) {
+  // check done btn
+  if (clickedElement === doneBtn) {
+    // change UI
+    doneListTask(taskId);
+    // check is there any ID
+  } else if (taskId) {
     //delete the task from data structure
     deleteTask(taskId);
     //delete the task from the UI
