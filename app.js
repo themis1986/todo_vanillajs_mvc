@@ -30,6 +30,21 @@ function addTask(des) {
   return newTask;
 }
 
+// delete task
+function deleteTask(id) {
+  let ids, index;
+  // create array for IDs
+  ids = taskStore.map(function (current) {
+    return current.id;
+  });
+  // find ids index
+  index = ids.indexOf(parseInt(id));
+  // delete task
+  if (index !== -1) {
+    taskStore.splice(index, 1);
+  }
+}
+
 // UI CONTROLLER
 
 const DOMStrings = {
@@ -69,6 +84,16 @@ function addTaskList(task) {
   element.insertAdjacentHTML("beforeend", newHTML);
 }
 
+// delete task from UI
+function deleteListTask(selectorId) {
+  let el;
+
+  el = document.getElementById(selectorId);
+
+  // remove html from DOM
+  el.remove();
+}
+
 // APP CONTROLLER
 
 function ctrlAddTask() {
@@ -88,6 +113,20 @@ function ctrlAddTask() {
   }
 }
 
+function ctrlDeleteTask(event) {
+  let taskId;
+  // find ID
+  taskId = event.target.parentNode.parentNode.parentNode.parentNode.id;
+
+  // check is there any ID
+  if (taskId) {
+    //delete the task from data structure
+    deleteTask(taskId);
+    //delete the task from the UI
+    deleteListTask(taskId);
+  }
+}
+
 DOMStrings.addBtn.addEventListener("click", ctrlAddTask);
 
 document.addEventListener("keypress", function (event) {
@@ -95,3 +134,5 @@ document.addEventListener("keypress", function (event) {
     ctrlAddTask();
   }
 });
+
+DOMStrings.taskContainer.addEventListener("click", ctrlDeleteTask);
